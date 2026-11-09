@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intercambio navideño</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Josefin+Sans:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#3f9b54; --green-d:#2f7d42; --green-l:#e9f4ea; --red:#c8232c; --red-d:#a51c24;
+  --gold:#f7c531; --orange:#f39a1e; --ink:#33363a; --muted:#7a7f85; --line:#e7e9e4; --bg:#f5f8f3;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 Nunito,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.topbar{background:var(--green);color:#fff;display:flex;align-items:center;gap:10px;padding:12px 16px;position:sticky;top:0;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.topbar svg{width:22px;height:26px;flex:none}
+.topbar .brand{font-family:Lobster,cursive;font-size:22px;line-height:1}
+.hero{background:#fff;overflow:hidden}
+.hero-txt{padding:26px 22px 6px}
+.kicker{font-family:"Josefin Sans",sans-serif;font-weight:600;letter-spacing:.06em;color:var(--green);font-size:15px;margin:0;text-transform:uppercase}
+h1{font-family:Lobster,cursive;font-weight:400;color:var(--red);font-size:44px;line-height:1.05;margin:4px 0 8px}
+.lead{color:var(--muted);font-size:15px;margin:0}
+.scene{display:block;width:100%;height:auto;margin-top:6px}
+.wrap{max-width:560px;margin:0 auto;padding:0 14px 40px}
+.tabs{display:flex;gap:0;margin:18px 0 16px;border:2px solid var(--red);border-radius:8px;overflow:hidden;background:#fff}
+.tab{flex:1;border:0;background:#fff;padding:12px 8px;font:700 14px "Josefin Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--red);cursor:pointer}
+.tab.on{background:var(--red);color:#fff}
+.card{background:#fff;border-radius:14px;padding:18px 16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(47,125,66,.08);border-top:4px solid var(--green)}
+h2{font-family:"Josefin Sans",sans-serif;font-weight:700;font-size:17px;letter-spacing:.03em;text-transform:uppercase;margin:0 0 4px;color:var(--green-d)}
+h2 .n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;font-size:13px;margin-right:6px;vertical-align:2px}
+.hint{color:var(--muted);font-size:14px;margin:0 0 12px}
+label{display:block;font:700 12px "Josefin Sans",sans-serif;color:var(--muted);margin:12px 0 5px;text-transform:uppercase;letter-spacing:.06em}
+input,textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:10px;font:16px Nunito,sans-serif;background:#fff;color:var(--ink)}
+input:focus{outline:none;border-color:var(--green)}
+.fam{border:1.5px solid var(--line);border-left:5px solid var(--red);border-radius:12px;padding:12px;margin-bottom:12px;background:#fffdfb}
+.fam:nth-child(3n+2){border-left-color:var(--green)}
+.fam:nth-child(3n+3){border-left-color:var(--orange)}
+.fam-head{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.fam-head input{font-weight:700;color:var(--green-d)}
+.person{display:grid;grid-template-columns:1fr auto;gap:6px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+.person .ph{grid-column:1/2}
+.person .x{grid-row:1/3;grid-column:2;align-self:center}
+.x{border:0;background:transparent;color:#b9bdc2;font-size:24px;width:40px;height:40px;cursor:pointer;border-radius:10px}
+.x:active{background:#fbe9ea;color:var(--red)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:8px;padding:12px 16px;font:700 14px "Josefin Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;text-decoration:none;min-height:44px}
+.btn-pri{background:var(--red);color:#fff;width:100%;padding:16px;font-size:16px;box-shadow:0 4px 0 var(--red-d)}
+.btn-pri:active{transform:translateY(2px);box-shadow:0 2px 0 var(--red-d)}
+.btn-ghost{background:#fff;color:var(--red);border:2px solid var(--red)}
+.btn-sm{padding:9px 12px;font-size:13px;min-height:40px}
+.btn-wa{background:#25a35a;color:#fff}
+.btn-copy{background:#fff;color:var(--green-d);border:2px solid var(--green)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.err{background:#fbe9ea;color:var(--red);border-radius:10px;padding:12px;font-size:14px;margin-top:12px;display:none;font-weight:600}
+.ok{background:var(--green-l);color:var(--green-d);border-radius:10px;padding:12px;font-size:14px;margin-bottom:12px;font-weight:600}
+.res{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.res:last-child{border-bottom:0}
+.res .nm{font-weight:700}
+.res .fm{font-size:12px;color:var(--muted)}
+.res.sent .nm::after{content:" ✓";color:var(--green)}
+.mode{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-transform:none;letter-spacing:0;font:400 14px Nunito,sans-serif;color:var(--ink);border:1.5px solid var(--line);border-radius:10px;padding:12px;margin:0;cursor:pointer;background:#fff}
+.opt:has(input:checked){border-color:var(--green);background:var(--green-l)}
+.opt input{width:20px;height:20px;margin-top:1px;accent-color:var(--green);flex:none}
+.small{font-size:12.5px;color:var(--muted)}
+.hidden{display:none}
+.reveal{text-align:center;padding:26px 18px 22px;border-top-color:var(--red)}
+.reveal .hola{font-family:"Josefin Sans",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--green);font-size:16px}
+.reveal .lbl{margin-top:8px;color:var(--muted);font-size:16px}
+.reveal .to{font-family:Lobster,cursive;font-size:48px;color:var(--red);margin:4px 0 6px;line-height:1.1;word-break:break-word}
+.chip{display:inline-block;background:var(--green-l);color:var(--green-d);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;margin:4px 3px 0}
+.secret{margin-top:18px;font:600 13px "Josefin Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--red)}
+.foot{background:var(--green);color:#e4f3e7;text-align:center;font-size:13px;padding:16px}
+.solo .tabs,.solo #org,.solo #askCode,.solo .hero-txt{display:none!important}
+.solo #ver{display:block!important}
+.solo .wrap{margin-top:-28px;position:relative}
+.snow{animation:fall linear infinite}
+@keyframes fall{from{transform:translateY(-20px)}to{transform:translateY(340px)}}
+@media (prefers-reduced-motion:reduce){.snow{animation:none}}
+@media (min-width:700px){h1{font-size:56px}.hero-txt{text-align:center}}
+</style>
+</head>
+<body>
+<div class="topbar"><svg viewBox="0 0 22 26" aria-hidden="true"><path d="M11 2l9 20H2z" fill="#f7c531"/><rect x="9" y="21" width="4" height="4" fill="#f7c531"/></svg><span class="brand">Intercambio navideño</span></div>
+<div class="hero">
+  <div class="hero-txt">
+    <p class="kicker">Les deseamos una</p>
+    <h1>Feliz Navidad</h1>
+    <p class="lead">Sorteo secreto por familias. Cada quien recibe su resultado por WhatsApp.</p>
+  </div>
+  <svg class="scene" viewBox="0 0 400 330" role="img" aria-label="Árbol de Navidad con regalos">
+  <defs>
+    <linearGradient id="arc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f39a1e"/><stop offset="1" stop-color="#f7c531"/></linearGradient>
+    <clipPath id="cl"><rect width="400" height="330"/></clipPath><clipPath id="rc"><circle cx="430" cy="430" r="418"/></clipPath>
+  </defs>
+  <g clip-path="url(#cl)">
+    <circle cx="420" cy="420" r="430" fill="url(#arc)"/>
+    <circle cx="430" cy="430" r="418" fill="#c8232c"/>
+    <g opacity=".06" fill="#000" clip-path="url(#rc)"><rect x="40" y="0" width="1.5" height="330"/><rect x="54" y="0" width="1.5" height="330"/><rect x="68" y="0" width="1.5" height="330"/><rect x="82" y="0" width="1.5" height="330"/><rect x="96" y="0" width="1.5" height="330"/><rect x="110" y="0" width="1.5" height="330"/><rect x="124" y="0" width="1.5" height="330"/><rect x="138" y="0" width="1.5" height="330"/><rect x="152" y="0" width="1.5" height="330"/><rect x="166" y="0" width="1.5" height="330"/><rect x="180" y="0" width="1.5" height="330"/><rect x="194" y="0" width="1.5" height="330"/><rect x="208" y="0" width="1.5" height="330"/><rect x="222" y="0" width="1.5" height="330"/><rect x="236" y="0" width="1.5" height="330"/><rect x="250" y="0" width="1.5" height="330"/><rect x="264" y="0" width="1.5" height="330"/><rect x="278" y="0" width="1.5" height="330"/><rect x="292" y="0" width="1.5" height="330"/><rect x="306" y="0" width="1.5" height="330"/><rect x="320" y="0" width="1.5" height="330"/><rect x="334" y="0" width="1.5" height="330"/><rect x="348" y="0" width="1.5" height="330"/><rect x="362" y="0" width="1.5" height="330"/><rect x="376" y="0" width="1.5" height="330"/><rect x="390" y="0" width="1.5" height="330"/></g>
+    <circle cx="275" cy="97" r="6" fill="#fff" opacity=".95"/><circle cx="134" cy="57" r="3" fill="#fff" opacity=".95"/><circle cx="297" cy="49" r="4" fill="#fff" opacity=".95"/><circle cx="129" cy="64" r="6" fill="#fff" opacity=".95"/><circle cx="324" cy="55" r="4" fill="#fff" opacity=".95"/><circle cx="156" cy="237" r="3" fill="#fff" opacity=".95"/><circle cx="173" cy="134" r="3" fill="#fff" opacity=".95"/><circle cx="313" cy="45" r="4" fill="#fff" opacity=".95"/><circle cx="133" cy="88" r="5" fill="#fff" opacity=".95"/><circle cx="324" cy="93" r="3" fill="#fff" opacity=".95"/><circle cx="267" cy="112" r="3" fill="#fff" opacity=".95"/><circle cx="206" cy="210" r="3" fill="#fff" opacity=".95"/><circle cx="390" cy="52" r="3" fill="#fff" opacity=".95"/><circle cx="215" cy="274" r="6" fill="#fff" opacity=".95"/><circle cx="270" cy="258" r="6" fill="#fff" opacity=".95"/><circle cx="295" cy="173" r="4" fill="#fff" opacity=".95"/><circle class="snow" cx="130" cy="0" r="3" fill="#fff" style="animation-duration:9s;animation-delay:-1s"/><circle class="snow" cx="300" cy="0" r="2.5" fill="#fff" style="animation-duration:11s;animation-delay:-4s"/><circle class="snow" cx="360" cy="0" r="3" fill="#fff" style="animation-duration:8s;animation-delay:-6s"/><circle class="snow" cx="250" cy="0" r="2" fill="#fff" style="animation-duration:12s;animation-delay:-2s"/><circle class="snow" cx="180" cy="0" r="2.5" fill="#fff" style="animation-duration:10s;animation-delay:-7s"/><circle class="snow" cx="390" cy="0" r="2" fill="#fff" style="animation-duration:13s;animation-delay:-3s"/>
+    <g stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M196 18v12M174 30l7 7M218 30l-7 7M164 52h10M228 52h-10M178 70l6-5M214 70l-6-5"/></g>
+    <path d="M196 34l6 13 14 1-11 9 4 14-13-8-13 8 4-14-11-9 14-1z" fill="#f7c531"/>
+    <path d="M196 78 L232 118 Q196 128 160 118 Z" fill="#7cc576"/>
+    <path d="M196 100 L254 160 Q196 176 138 160 Z" fill="#6dbd69"/>
+    <path d="M196 132 L272 210 Q196 230 120 210 Z" fill="#7cc576"/>
+    <path d="M196 170 L290 262 Q196 286 102 262 Z" fill="#6dbd69"/>
+    <path d="M196 210 L306 306 Q196 332 86 306 Z" fill="#7cc576"/>
+    <g stroke="#f5c53a" stroke-width="2" fill="none"><path d="M166 116 Q200 128 228 112"/><path d="M146 158 Q200 172 250 152"/><path d="M128 206 Q196 224 266 200"/><path d="M112 258 Q196 280 284 252"/><path d="M98 302 Q196 324 300 296"/></g>
+    <g><circle cx="196" cy="98" r="2" fill="#bbb"/><circle cx="196" cy="108" r="7" fill="#f5c53a"/><path d="M190 108 l2.3 -3 l2.3 3 l2.3 -3 l2.3 3 l2.3 -3 l2.3 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="176" cy="129" r="2" fill="#bbb"/><circle cx="176" cy="140" r="8" fill="#d8323b"/><path d="M169 140 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="222" cy="128" r="2" fill="#bbb"/><circle cx="222" cy="138" r="7" fill="#2f55b5"/><path d="M216 138 l2.3 -3 l2.3 3 l2.3 -3 l2.3 3 l2.3 -3 l2.3 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="160" cy="173" r="2" fill="#bbb"/><circle cx="160" cy="184" r="8" fill="#2f55b5"/><path d="M153 184 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="200" cy="170" r="2" fill="#bbb"/><circle cx="200" cy="180" r="7" fill="#d8323b"/><path d="M194 180 l2.3 -3 l2.3 3 l2.3 -3 l2.3 3 l2.3 -3 l2.3 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="240" cy="175" r="2" fill="#bbb"/><circle cx="240" cy="186" r="8" fill="#f5c53a"/><path d="M233 186 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="150" cy="220" r="2" fill="#bbb"/><circle cx="150" cy="232" r="9" fill="#d8323b"/><path d="M142 232 l3.0 -3 l3.0 3 l3.0 -3 l3.0 3 l3.0 -3 l3.0 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="196" cy="224" r="2" fill="#bbb"/><circle cx="196" cy="236" r="9" fill="#f5c53a"/><path d="M188 236 l3.0 -3 l3.0 3 l3.0 -3 l3.0 3 l3.0 -3 l3.0 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="246" cy="219" r="2" fill="#bbb"/><circle cx="246" cy="230" r="8" fill="#2f55b5"/><path d="M239 230 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="138" cy="266" r="2" fill="#bbb"/><circle cx="138" cy="278" r="9" fill="#2f55b5"/><path d="M130 278 l3.0 -3 l3.0 3 l3.0 -3 l3.0 3 l3.0 -3 l3.0 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="186" cy="273" r="2" fill="#bbb"/><circle cx="186" cy="284" r="8" fill="#d8323b"/><path d="M179 284 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="236" cy="269" r="2" fill="#bbb"/><circle cx="236" cy="282" r="10" fill="#f5c53a"/><path d="M227 282 l3.3 -3 l3.3 3 l3.3 -3 l3.3 3 l3.3 -3 l3.3 3" stroke="#fff" stroke-width="1.6" fill="none"/></g><g><circle cx="270" cy="257" r="2" fill="#bbb"/><circle cx="270" cy="268" r="8" fill="#d8323b"/><path d="M263 268 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3 l2.7 -3 l2.7 3" stroke="#fff" stroke-width="1.6" fill="none"/></g>
+    <rect x="182" y="312" width="28" height="20" fill="#b9732f"/>
+    <g><rect x="40" y="272" width="72" height="60" fill="#f5c53a"/><rect x="34" y="262" width="84" height="16" fill="#f7d35c"/><rect x="70" y="262" width="12" height="70" fill="#f39a1e"/><path d="M76 262c-10-16-28-14-24-4 3 6 14 5 24 4zM76 262c10-16 28-14 24-4-3 6-14 5-24 4z" fill="none" stroke="#f39a1e" stroke-width="5"/></g>
+    <g><rect x="150" y="292" width="58" height="40" fill="#e23b5b"/><rect x="145" y="284" width="68" height="13" fill="#ef4f6e"/><rect x="174" y="284" width="10" height="48" fill="#f5c53a"/><path d="M179 284c-8-12-22-10-19-3 3 5 11 4 19 3zM179 284c8-12 22-10 19-3-3 5-11 4-19 3z" fill="none" stroke="#f5c53a" stroke-width="4"/></g>
+    <g><rect x="300" y="268" width="74" height="64" fill="#e33fb8"/><rect x="294" y="258" width="86" height="16" fill="#ef58c6"/><rect x="331" y="258" width="12" height="74" fill="#7a3fd0"/><path d="M337 258c-10-16-28-14-24-4 3 6 14 5 24 4zM337 258c10-16 28-14 24-4-3 6-14 5-24 4z" fill="none" stroke="#7a3fd0" stroke-width="5"/></g>
+  </g>
+</svg>
+</div>
+<div class="wrap">
+
+  <div class="tabs">
+    <button class="tab on" data-view="org">Organizar</button>
+    <button class="tab" data-view="ver">Ver mi resultado</button>
+  </div>
+
+  <!-- ORGANIZAR -->
+  <section id="org">
+    <div id="setup">
+      <div class="card">
+        <h2><span class="n">1</span>Familias</h2>
+        <p class="hint">Nadie le regala a alguien de su misma familia. Teléfono de 8 dígitos (se agrega el 506 solo). Si es de otro país, ponlo con su código.</p>
+        <div id="fams"></div>
+        <button class="btn btn-ghost" id="addFam" style="width:100%">+ Agregar familia</button>
+      </div>
+
+      <div class="card">
+        <h2><span class="n">2</span>Detalles</h2>
+        <div class="grid2">
+          <div><label>Presupuesto</label><input id="budget" placeholder="₡15 000"></div>
+          <div><label>Fecha</label><input id="date" placeholder="24 de diciembre"></div>
+        </div>
+        <label>Cómo les llega el resultado</label>
+        <div class="mode">
+          <label class="opt"><input type="radio" name="mode" value="link"> <span><b>Enlace secreto</b> (recomendado)<br><span class="small">El mensaje trae un enlace. Lo tocan y ven el nombre. Tú no lo ves al enviar.</span></span></label>
+          <label class="opt"><input type="radio" name="mode" value="name"> <span><b>Nombre directo en el mensaje</b><br><span class="small">El nombre va escrito en el WhatsApp. Quien envía los mensajes lo ve, así que úsalo solo si quien envía no participa.</span></span></label>
+        </div>
+        <label>Enlace de esta página</label>
+        <input id="link" placeholder="https://claude.ai/…">
+        <p class="small" style="margin:6px 0 0">Va en el mensaje para que cada quien abra la página y vea su resultado. La página debe estar compartida con enlace.</p>
+      </div>
+
+      <button class="btn btn-pri" id="gen">Hacer el sorteo</button>
+      <details style="margin-top:16px" class="card">
+        <summary style="font-weight:700;color:var(--green-d);cursor:pointer">¿Ya hiciste el sorteo? Restaurar respaldo</summary>
+        <input id="bkIn" placeholder="Pega aquí el respaldo" autocomplete="off" style="margin-top:12px">
+        <button class="btn btn-ghost" id="bkGo" style="width:100%;margin-top:8px">Restaurar</button>
+        <div class="err" id="err3"></div>
+      </details>
+      <div class="err" id="err"></div>
+    </div>
+
+    <div id="done" class="hidden">
+      <div class="card">
+        <div class="ok" id="okmsg"></div>
+        <h2><span class="n">3</span>Enviar por WhatsApp</h2>
+        <p class="hint">Toca WhatsApp para abrir el chat con el mensaje listo. Abrí cada chat desde tu teléfono.</p>
+        <div id="list"></div>
+      </div>
+      <div class="row">
+        <button class="btn btn-ghost" id="back" style="flex:1">Editar participantes</button>
+        <button class="btn btn-copy" id="redo" style="flex:1">Volver a sortear</button>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>Respaldo</h2>
+        <p class="hint">Guarda el sorteo cifrado (por ejemplo, mándatelo a ti mismo por WhatsApp). Si se borra del teléfono, lo restauras y reenvías los mensajes sin ver los nombres.</p>
+        <button class="btn btn-copy" id="bk" style="width:100%">Copiar respaldo</button>
+      </div>
+      <p class="small" style="margin-top:12px">Si vuelves a sortear, los códigos anteriores dejan de valer: reenvía a todos.</p>
+    </div>
+  </section>
+
+  <!-- VER -->
+  <section id="ver" class="hidden">
+    <div class="card" id="askCode">
+      <h2>Ver a quién le regalo</h2>
+      <p class="hint">Pega el enlace o el código que te llegó por WhatsApp.</p>
+      <input id="code" placeholder="s-…" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <div style="height:10px"></div>
+      <button class="btn btn-pri" id="see">Ver mi resultado</button>
+      <div class="err" id="err2"></div>
+    </div>
+    <div class="card reveal hidden" id="revealBox">
+      <div class="hola" id="hola"></div>
+      <div class="lbl">Te toca regalarle a</div>
+      <div class="to" id="to"></div>
+      <div id="extra"></div>
+      <div class="secret">Es secreto, no se lo digas a nadie</div>
+      <button class="btn btn-copy btn-sm" id="hide" style="margin-top:14px">Ocultar</button>
+    </div>
+  </section>
+
+</div>
+<div class="foot">Todo se calcula en tu teléfono. No se guarda en ningún servidor.</div>
+
+<script>
+(function(){
+  const DEFAULT_LINK = "https://claude.ai/artifact/NRHujbVdtn6RgT2huaxSFH";
+  const KEY = "pura-vida-navidad-2026";
+  const STORE = "intercambio-v1";
+  const $ = s => document.querySelector(s);
+
+  // ---------- storage ----------
+  function load(){ try{ return JSON.parse(localStorage.getItem(STORE)) || null }catch(e){ return null } }
+  function save(){ try{ localStorage.setItem(STORE, JSON.stringify(state)) }catch(e){} }
+
+  let state = load() || {
+    fams:[{name:"Familia 1",people:[{n:"",p:""},{n:"",p:""}]},{name:"Familia 2",people:[{n:"",p:""},{n:"",p:""}]}],
+    budget:"", date:"", link:"", mode:"link", result:null
+  };
+  if(!state.mode) state.mode="link";
+  const onOwnHost = /^https?:$/.test(location.protocol) && !/claude|anthropic/i.test(location.hostname);
+  if(onOwnHost && (!state.link || /claude\.ai/.test(state.link))) state.link = location.origin + location.pathname;
+  if(!state.link && DEFAULT_LINK.indexOf("http")===0) state.link = DEFAULT_LINK;
+
+  // ---------- tabs ----------
+  document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));
+    $("#org").classList.toggle("hidden",t.dataset.view!=="org");
+    $("#ver").classList.toggle("hidden",t.dataset.view!=="ver");
+  });
+
+  // ---------- render families ----------
+  function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+  function renderFams(){
+    const box = $("#fams"); box.innerHTML="";
+    state.fams.forEach((f,fi)=>{
+      const d=document.createElement("div"); d.className="fam";
+      d.innerHTML = `<div class="fam-head"><input value="${esc(f.name)}" data-f="${fi}" class="fname" placeholder="Nombre de la familia"><button class="x" data-delf="${fi}" title="Quitar familia">×</button></div>`+
+        f.people.map((p,pi)=>`<div class="person"><input value="${esc(p.n)}" data-f="${fi}" data-p="${pi}" data-k="n" placeholder="Nombre"><input class="ph" value="${esc(p.p)}" data-f="${fi}" data-p="${pi}" data-k="p" placeholder="Teléfono" inputmode="tel"><button class="x" data-f="${fi}" data-delp="${pi}" title="Quitar">×</button></div>`).join("")+
+        `<button class="btn btn-ghost btn-sm" data-addp="${fi}">+ Persona</button>`;
+      box.appendChild(d);
+    });
+    document.querySelectorAll('input[name=mode]').forEach(r=>r.checked=(r.value===state.mode));
+    $("#budget").value=state.budget; $("#date").value=state.date; $("#link").value=state.link;
+  }
+  $("#fams").addEventListener("input",e=>{
+    const t=e.target, fi=+t.dataset.f;
+    if(t.classList.contains("fname")) state.fams[fi].name=t.value;
+    else if(t.dataset.k) state.fams[fi].people[+t.dataset.p][t.dataset.k]=t.value;
+    save();
+  });
+  $("#fams").addEventListener("click",e=>{
+    const t=e.target;
+    if(t.dataset.addp!==undefined){ state.fams[+t.dataset.addp].people.push({n:"",p:""}); }
+    else if(t.dataset.delp!==undefined){ state.fams[+t.dataset.f].people.splice(+t.dataset.delp,1); }
+    else if(t.dataset.delf!==undefined){ state.fams.splice(+t.dataset.delf,1); }
+    else return;
+    save(); renderFams();
+  });
+  $("#addFam").onclick=()=>{ state.fams.push({name:"Familia "+(state.fams.length+1),people:[{n:"",p:""}]}); save(); renderFams(); };
+  document.querySelectorAll('input[name=mode]').forEach(r=>r.addEventListener("change",()=>{state.mode=r.value;save();if(state.result)renderDone();}));
+  ["budget","date","link"].forEach(k=>$("#"+k).addEventListener("input",e=>{state[k]=e.target.value.trim();save();}));
+
+  // ---------- random + draw ----------
+  function rnd(n){ const a=new Uint32Array(1); crypto.getRandomValues(a); return a[0]%n; }
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+  function draw(people){
+    // people: [{n,p,f}]
+    const n=people.length;
+    for(let attempt=0;attempt<5000;attempt++){
+      const givers=shuffle([...Array(n).keys()]);
+      const free=new Set([...Array(n).keys()]);
+      const map={}; let ok=true;
+      // assign biggest families first to reduce dead ends
+      givers.sort((a,b)=>famSize(people,people[b].f)-famSize(people,people[a].f) || 0);
+      for(const g of givers){
+        const opts=[...free].filter(r=>people[r].f!==people[g].f);
+        if(!opts.length){ok=false;break;}
+        const r=opts[rnd(opts.length)]; map[g]=r; free.delete(r);
+      }
+      if(ok) return map;
+    }
+    return null;
+  }
+  function phone(raw){ let d=String(raw||"").replace(/\D/g,""); if(d.startsWith("00")) d=d.slice(2); if(d.length===8) d="506"+d; return d; }
+  function famSize(ps,f){ return ps.filter(x=>x.f===f).length; }
+
+  // ---------- encode / decode ----------
+  function xor(bytes){ const k=new TextEncoder().encode(KEY); return bytes.map((b,i)=>b^k[i%k.length]^((i*31+7)&255)); }
+  function b64u(bytes){ let s=""; bytes.forEach(b=>s+=String.fromCharCode(b)); return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""); }
+  function unb64u(s){ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4)s+="="; const bin=atob(s); return Uint8Array.from(bin,c=>c.charCodeAt(0)); }
+  function hex(b){ return b.map(x=>x.toString(16).padStart(2,"0")).join(""); }
+  function encode(obj){ const raw=new TextEncoder().encode(JSON.stringify(obj)); return "s-"+hex(xor(Array.from(raw))); }
+  function decode(code){
+    code=code.trim().replace(/\s+/g,""); const m=code.match(/s-([0-9a-f]+)/i); if(!m) throw 0;
+    const bytes=xor(m[1].match(/../g).map(h=>parseInt(h,16))); const o=JSON.parse(new TextDecoder().decode(new Uint8Array(bytes)));
+    if(!o.r) throw 0; return o;
+  }
+
+  // ---------- generate ----------
+  function showErr(m){ const e=$("#err"); e.textContent=m; e.style.display=m?"block":"none"; }
+  $("#gen").onclick=()=>{
+    showErr("");
+    const people=[]; const names=new Set();
+    for(const [fi,f] of state.fams.entries()){
+      for(const p of f.people){
+        const n=p.n.trim(); if(!n) continue;
+        const key=n.toLowerCase();
+        if(names.has(key)) return showErr(`"${n}" aparece dos veces. Agrega el apellido o una inicial para diferenciar.`);
+        names.add(key);
+        people.push({n, p:phone(p.p), f:fi, fam:f.name.trim()||("Familia "+(fi+1))});
+      }
+    }
+    if(state.mode==="link" && !/^https?:\/\//.test(state.link||"")) return showErr("Falta el enlace de la página.");
+    if(people.length<3) return showErr("Se necesitan al menos 3 personas.");
+    const famsUsed=new Set(people.map(p=>p.f));
+    if(famsUsed.size<2) return showErr("Se necesitan al menos 2 familias.");
+    const biggest=Math.max(...[...famsUsed].map(f=>famSize(people,f)));
+    if(biggest>people.length-biggest) return showErr(`No se puede: una familia tiene ${biggest} personas y el resto suma ${people.length-biggest}. Cada familia debe tener como máximo la mitad del total.`);
+    const map=draw(people);
+    if(!map) return showErr("No se encontró una combinación válida. Intenta de nuevo.");
+    const sid=Date.now().toString(36).slice(-4);
+    state.result=people.map((p,i)=>({n:p.n,p:p.p,fam:p.fam,to:people[map[i]].n,sent:false,code:encode({g:p.n,r:people[map[i]].n,b:state.budget,d:state.date,s:sid})}));
+    save(); renderDone();
+  };
+
+  function linkFor(r){ const base=(state.link||"").split("#")[0]; return base+"#"+r.code; }
+  function message(r){
+    const lines=[`Hola ${r.n}! Ya se hizo el sorteo del intercambio navideño.`,""];
+    if(state.mode==="name"){
+      lines.push("Te toca regalarle a:", `*${r.to}*`, "");
+    } else {
+      lines.push("Tocá este enlace para ver a quién te toca regalar:", linkFor(r), "");
+    }
+    if(state.budget) lines.push(`Presupuesto: ${state.budget}`);
+    if(state.date) lines.push(`Fecha: ${state.date}`);
+    lines.push("Es secreto, no se lo digás a nadie.");
+    return lines.join("\n");
+  }
+  function renderDone(){
+    $("#setup").classList.add("hidden"); $("#done").classList.remove("hidden");
+    $("#okmsg").textContent = state.mode==="name"
+      ? "Sorteo listo. Los nombres van escritos en cada mensaje: no los leas al enviar si participas."
+      : "Sorteo listo. Cada persona recibe un enlace que le muestra solo su resultado. Tú no ves quién le toca a quién.";
+    const list=$("#list"); list.innerHTML="";
+    state.result.forEach((r,i)=>{
+      const d=document.createElement("div"); d.className="res"+(r.sent?" sent":"");
+      const txt=encodeURIComponent(message(r));
+      const wa = r.p ? `<a class="btn btn-wa btn-sm" href="https://wa.me/${r.p}?text=${txt}" target="_blank" rel="noopener" data-i="${i}">WhatsApp</a>` : "";
+      d.innerHTML=`<div><div class="nm">${esc(r.n)}</div><div class="fm">${esc(r.fam)}${r.p?"":" · sin teléfono"}</div></div><div class="row">${wa}<button class="btn btn-copy btn-sm" data-c="${i}">Copiar</button></div>`;
+      list.appendChild(d);
+    });
+  }
+  $("#list").addEventListener("click",async e=>{
+    const t=e.target;
+    if(t.dataset.i!==undefined){ state.result[+t.dataset.i].sent=true; save(); setTimeout(renderDone,300); }
+    if(t.dataset.c!==undefined){
+      const r=state.result[+t.dataset.c];
+      try{ await navigator.clipboard.writeText(message(r)); t.textContent="Copiado"; r.sent=true; save(); setTimeout(renderDone,900); }
+      catch(err){ t.textContent="No se pudo"; }
+    }
+  });
+  $("#bk").onclick=async e=>{
+    const t=e.target;
+    const data={r:state.result,l:state.link,b:state.budget,d:state.date,m:state.mode};
+    const txt="RESPALDO-"+hex(xor(Array.from(new TextEncoder().encode(JSON.stringify(data)))));
+    try{ await navigator.clipboard.writeText(txt); t.textContent="Respaldo copiado"; }catch(err){ t.textContent="No se pudo copiar"; }
+    setTimeout(()=>t.textContent="Copiar respaldo",2500);
+  };
+  $("#bkGo").onclick=()=>{
+    const e=$("#err3"); e.style.display="none";
+    try{
+      const m=$("#bkIn").value.replace(/\s+/g,"").match(/RESPALDO-([0-9a-f]+)/i); if(!m) throw 0;
+      const o=JSON.parse(new TextDecoder().decode(new Uint8Array(xor(m[1].match(/../g).map(h=>parseInt(h,16))))));
+      if(!Array.isArray(o.r)) throw 0;
+      Object.assign(state,{result:o.r,link:o.l||state.link,budget:o.b||"",date:o.d||"",mode:o.m||"link"});
+      save(); renderDone();
+    }catch(err){ e.textContent="Ese respaldo no es válido. Cópialo completo."; e.style.display="block"; }
+  };
+  $("#back").onclick=()=>{ $("#done").classList.add("hidden"); $("#setup").classList.remove("hidden"); renderFams(); };
+  $("#redo").onclick=()=>{ $("#done").classList.add("hidden"); $("#setup").classList.remove("hidden"); $("#gen").click(); };
+
+  // ---------- reveal ----------
+  function show(o){
+      $("#hola").textContent=`Hola ${o.g}`;
+      $("#to").textContent=o.r;
+      $("#extra").innerHTML=[o.b?`<span class="chip">Presupuesto: ${esc(o.b)}</span>`:"",o.d?`<span class="chip">Fecha: ${esc(o.d)}</span>`:""].join("");
+      $("#askCode").classList.add("hidden"); $("#revealBox").classList.remove("hidden");
+  }
+  function fromHash(){
+    const h=location.hash.slice(1);
+    if(/^s-[0-9a-f]+$/i.test(h)){ try{ show(decode(h)); document.body.classList.add("solo"); $("#hide").classList.add("hidden"); return true; }catch(e){} }
+    return false;
+  }
+  window.addEventListener("hashchange",fromHash);
+  $("#see").onclick=()=>{
+    const e=$("#err2"); e.style.display="none";
+    try{
+      const o=decode($("#code").value); show(o); return;
+      $("#hola").textContent=`Hola ${o.g}`;
+      $("#to").textContent=o.r;
+      $("#extra").innerHTML=[o.b?`<span class="chip">Presupuesto: ${esc(o.b)}</span>`:"",o.d?`<span class="chip">Fecha: ${esc(o.d)}</span>`:""].join("");
+      $("#askCode").classList.add("hidden"); $("#revealBox").classList.remove("hidden");
+    }catch(err){ e.textContent="Ese código no es válido. Cópialo completo, incluyendo s-."; e.style.display="block"; }
+  };
+  $("#hide").onclick=()=>{ $("#revealBox").classList.add("hidden"); $("#askCode").classList.remove("hidden"); $("#code").value=""; };
+
+  if(!fromHash()){
+    renderFams();
+    if(state.result) renderDone();
+  }
+})();
+</script>
+</body>
+</html>
