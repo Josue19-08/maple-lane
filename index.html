@@ -126,6 +126,11 @@ input:focus{outline:none;border-color:var(--green)}
   <!-- ORGANIZAR -->
   <section id="org">
     <div id="setup">
+      <div class="card hidden" id="hasRes" style="border-top-color:var(--red)">
+        <h2>Ya hay un sorteo hecho</h2>
+        <p class="hint">Para enviar a quien falta, vuelve a la lista. No toques "Hacer el sorteo": eso cambia todos los resultados.</p>
+        <button class="btn btn-pri" id="toList">Volver a la lista de envío</button>
+      </div>
       <div class="card">
         <h2><span class="n">1</span>Familias</h2>
         <p class="hint">Nadie le regala a alguien de su misma familia. Teléfono de 8 dígitos (se agrega el 506 solo). Si es de otro país, ponlo con su código.</p>
@@ -242,6 +247,7 @@ input:focus{outline:none;border-color:var(--green)}
       box.appendChild(d);
     });
     document.querySelectorAll('input[name=mode]').forEach(r=>r.checked=(r.value===state.mode));
+    $("#hasRes").classList.toggle("hidden",!state.result);
     $("#budget").value=state.budget; $("#date").value=state.date; $("#link").value=state.link;
   }
   $("#fams").addEventListener("input",e=>{
@@ -301,8 +307,11 @@ input:focus{outline:none;border-color:var(--green)}
 
   // ---------- generate ----------
   function showErr(m){ const e=$("#err"); e.textContent=m; e.style.display=m?"block":"none"; }
+  let armed=false;
   $("#gen").onclick=()=>{
     showErr("");
+    if(state.result && !armed){ armed=true; showErr("Ya hay un sorteo hecho. Si sorteas de nuevo, los enlaces que ya enviaste dejan de servir y hay que reenviar a todos. Toca otra vez para confirmar."); return; }
+    armed=false;
     const people=[]; const names=new Set();
     for(const [fi,f] of state.fams.entries()){
       for(const p of f.people){
@@ -362,6 +371,7 @@ input:focus{outline:none;border-color:var(--green)}
       catch(err){ t.textContent="No se pudo"; }
     }
   });
+  $("#toList").onclick=()=>renderDone();
   $("#bk").onclick=async e=>{
     const t=e.target;
     const data={r:state.result,l:state.link,b:state.budget,d:state.date,m:state.mode};
@@ -381,7 +391,7 @@ input:focus{outline:none;border-color:var(--green)}
     }catch(err){ e.textContent="Ese respaldo no es válido. Cópialo completo."; e.style.display="block"; }
   };
   $("#back").onclick=()=>{ $("#done").classList.add("hidden"); $("#setup").classList.remove("hidden"); renderFams(); };
-  $("#redo").onclick=()=>{ $("#done").classList.add("hidden"); $("#setup").classList.remove("hidden"); $("#gen").click(); };
+  $("#redo").onclick=()=>{ $("#done").classList.add("hidden"); $("#setup").classList.remove("hidden"); renderFams(); $("#gen").click(); };
 
   // ---------- reveal ----------
   function show(o){
