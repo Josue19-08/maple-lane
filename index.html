@@ -155,6 +155,22 @@ input:focus{outline:none;border-color:var(--green)}
       </div>
 
       <button class="btn btn-pri" id="gen">Hacer el sorteo</button>
+      <details style="margin-top:16px" class="card" id="recBox">
+        <summary style="font-weight:700;color:var(--red);cursor:pointer">Me faltó enviarle a alguien</summary>
+        <p class="small" style="margin:10px 0 0">Usa esto si ya enviaste los enlaces pero la lista no aparece aquí. Copia de tus chats de WhatsApp los mensajes que ya enviaste (todos, incluido el tuyo) y pégalos abajo, uno tras otro. No verás quién le toca a quién.</p>
+        <textarea id="recIn" rows="4" placeholder="Pega aquí los mensajes o enlaces enviados" style="margin-top:10px"></textarea>
+        <p class="small" id="recCount" style="margin:6px 0 0">Enlaces leídos: 0</p>
+        <label>Nombre de quien falta</label>
+        <input id="recName" placeholder="Escríbelo igual que en el sorteo">
+        <label>Teléfono de quien falta</label>
+        <input id="recPhone" placeholder="8 dígitos" inputmode="tel">
+        <button class="btn btn-pri" id="recGo" style="margin-top:12px">Sacar su enlace</button>
+        <div class="err" id="err4"></div>
+        <div id="recOut" class="hidden" style="margin-top:12px">
+          <div class="ok">Listo. Envíale su enlace:</div>
+          <div class="row"><a class="btn btn-wa" id="recWa" target="_blank" rel="noopener" style="flex:1">WhatsApp</a><button class="btn btn-copy" id="recCopy" style="flex:1">Copiar mensaje</button></div>
+        </div>
+      </details>
       <details style="margin-top:16px" class="card">
         <summary style="font-weight:700;color:var(--green-d);cursor:pointer">Restaurar un sorteo borrado</summary>
         <p class="small" style="margin:10px 0 0">Solo si ya hiciste el sorteo, guardaste el respaldo y se te borró. El respaldo se copia después de tocar "Hacer el sorteo".</p>
@@ -372,6 +388,36 @@ input:focus{outline:none;border-color:var(--green)}
     }
   });
   $("#toList").onclick=()=>renderDone();
+  function codesIn(txt){ const out=[], seen=new Set(); (txt.match(/s-[0-9a-f]{20,}/gi)||[]).forEach(c=>{ c=c.toLowerCase(); if(seen.has(c)) return; seen.add(c); try{ out.push(decode(c)); }catch(e){} }); return out; }
+  $("#recIn").addEventListener("input",()=>{ $("#recCount").textContent="Enlaces leídos: "+codesIn($("#recIn").value).length; });
+  let recMsg="";
+  $("#recGo").onclick=()=>{
+    const e=$("#err4"); e.style.display="none"; $("#recOut").classList.add("hidden");
+    const fail=m=>{ e.textContent=m; e.style.display="block"; };
+    const list=codesIn($("#recIn").value);
+    const miss=$("#recName").value.trim();
+    if(!list.length) return fail("No encontré enlaces. Pega los mensajes que enviaste por WhatsApp.");
+    if(!miss) return fail("Escribe el nombre de quien falta.");
+    const sids=new Set(list.map(o=>o.s)); if(sids.size>1) return fail("Hay enlaces de sorteos distintos mezclados. Pega solo los del último sorteo.");
+    const low=x=>String(x).trim().toLowerCase();
+    const givers=new Set(list.map(o=>low(o.g))), recv=new Set(list.map(o=>low(o.r)));
+    if(givers.has(low(miss))) return fail("A esa persona ya le enviaste su enlace (está entre los pegados).");
+    const all=[...list.map(o=>o.g), miss];
+    const left=all.filter(n=>!recv.has(low(n)));
+    if(left.length!==1) return fail("Faltan mensajes por pegar, o falta más de una persona. Pega todos los enlaces que enviaste.");
+    const o0=list[0];
+    const code=encode({g:miss,r:left[0],b:o0.b||"",d:o0.d||"",s:o0.s});
+    const r={n:miss,code};
+    const keep={m:state.mode,b:state.budget,d:state.date};
+    state.mode="link"; state.budget=o0.b||state.budget; state.date=o0.d||state.date;
+    recMsg=message(r);
+    state.mode=keep.m; state.budget=keep.b; state.date=keep.d;
+    const ph=phone($("#recPhone").value);
+    const wa=$("#recWa");
+    if(ph){ wa.href=`https://wa.me/${ph}?text=${encodeURIComponent(recMsg)}`; wa.classList.remove("hidden"); } else wa.classList.add("hidden");
+    $("#recOut").classList.remove("hidden");
+  };
+  $("#recCopy").onclick=async e=>{ try{ await navigator.clipboard.writeText(recMsg); e.target.textContent="Copiado"; }catch(err){ e.target.textContent="No se pudo"; } };
   $("#bk").onclick=async e=>{
     const t=e.target;
     const data={r:state.result,l:state.link,b:state.budget,d:state.date,m:state.mode};
