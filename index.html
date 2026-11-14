@@ -146,12 +146,13 @@ input:focus{outline:none;border-color:var(--green)}
         </div>
         <label>Enlace de esta página</label>
         <input id="link" placeholder="https://claude.ai/…">
-        <p class="small" style="margin:6px 0 0">Va en el mensaje para que cada quien abra la página y vea su resultado. La página debe estar compartida con enlace.</p>
+        <p class="small" style="margin:6px 0 0">Va en el mensaje de WhatsApp. No hace falta cambiarlo.</p>
       </div>
 
       <button class="btn btn-pri" id="gen">Hacer el sorteo</button>
       <details style="margin-top:16px" class="card">
-        <summary style="font-weight:700;color:var(--green-d);cursor:pointer">¿Ya hiciste el sorteo? Restaurar respaldo</summary>
+        <summary style="font-weight:700;color:var(--green-d);cursor:pointer">Restaurar un sorteo borrado</summary>
+        <p class="small" style="margin:10px 0 0">Solo si ya hiciste el sorteo, guardaste el respaldo y se te borró. El respaldo se copia después de tocar "Hacer el sorteo".</p>
         <input id="bkIn" placeholder="Pega aquí el respaldo" autocomplete="off" style="margin-top:12px">
         <button class="btn btn-ghost" id="bkGo" style="width:100%;margin-top:8px">Restaurar</button>
         <div class="err" id="err3"></div>
@@ -371,6 +372,7 @@ input:focus{outline:none;border-color:var(--green)}
   $("#bkGo").onclick=()=>{
     const e=$("#err3"); e.style.display="none";
     try{
+      if(!$("#bkIn").value.trim()){ e.textContent="Primero pega aquí el texto del respaldo (empieza con RESPALDO-)."; e.style.display="block"; return; }
       const m=$("#bkIn").value.replace(/\s+/g,"").match(/RESPALDO-([0-9a-f]+)/i); if(!m) throw 0;
       const o=JSON.parse(new TextDecoder().decode(new Uint8Array(xor(m[1].match(/../g).map(h=>parseInt(h,16))))));
       if(!Array.isArray(o.r)) throw 0;
