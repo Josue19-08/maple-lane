@@ -21,9 +21,7 @@ input:focus{outline:none;border-color:var(--green)}
 .btn{display:flex;align-items:center;justify-content:center;width:100%;border:0;border-radius:8px;padding:16px;font:700 16px "Josefin Sans",sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;text-decoration:none;min-height:52px;margin-top:14px}
 .pri{background:var(--red);color:#fff;box-shadow:0 4px 0 var(--red-d)}
 .wa{background:#25a35a;color:#fff}
-.cp{background:#fff;color:var(--green-d);border:2px solid var(--green)}
 .err{background:#fbe9ea;color:var(--red);border-radius:10px;padding:12px;font-size:15px;margin-top:12px;display:none;font-weight:600}
-.code{word-break:break-all;background:var(--green-l);border-radius:10px;padding:12px;font:14px/1.4 ui-monospace,Menlo,monospace;color:var(--green-d);margin:10px 0 0;user-select:all}
 .hidden{display:none}
 </style>
 </head>
@@ -32,18 +30,16 @@ input:focus{outline:none;border-color:var(--green)}
 <div class="wrap">
   <div class="card" id="f">
     <h1>Un favor rápido</h1>
-    <p>Escriba el nombre de la persona a quien le tocó regalar. Se genera un código que usted me envía. Yo no puedo leerlo.</p>
+    <p>Escriba el nombre de la persona a quien le tocó regalar. Luego se abre WhatsApp con un mensaje listo para enviarme a mí.</p>
     <label>Persona a quien le toca regalar</label>
     <input id="r" autocomplete="off" placeholder="Nombre de esa persona">
-    <button class="btn pri" id="go">Generar código</button>
+    <button class="btn pri" id="go">Continuar</button>
     <div class="err" id="err"></div>
   </div>
   <div class="card hidden" id="o">
     <h1>Listo</h1>
-    <p>Envíeme este código. No lo comparta con nadie más.</p>
-    <div class="code" id="code"></div>
-    <a class="btn wa" id="wa" target="_blank" rel="noopener">Enviar por WhatsApp</a>
-    <button class="btn cp" id="cp">Copiar código</button>
+    <p>Toque el botón. Se abre WhatsApp con el mensaje ya escrito. Solo falta presionar enviar.</p>
+    <a class="btn wa" id="wa" target="_blank" rel="noopener">Enviar a Josué por WhatsApp</a>
   </div>
 </div>
 <script>
@@ -59,15 +55,8 @@ input:focus{outline:none;border-color:var(--green)}
     if(!r){e.textContent="Escriba el nombre.";e.style.display="block";return}
     var raw=new TextEncoder().encode(JSON.stringify({g:"?",r:r,b:"",d:"",s:"help"}));
     var code="s-"+hex(xor(Array.from(raw)));
-    $("#code").textContent=code;
-    $("#wa").href="https://wa.me/?text="+encodeURIComponent(code);
+    $("#wa").href="https://wa.me/50683955394?text="+encodeURIComponent(code);
     $("#f").classList.add("hidden");$("#o").classList.remove("hidden");
-  };
-  $("#cp").onclick=function(ev){
-    var t=ev.target,c=$("#code").textContent;
-    function ok(){t.textContent="Copiado"}
-    function sel(){var rg=document.createRange();rg.selectNodeContents($("#code"));var s=getSelection();s.removeAllRanges();s.addRange(rg);t.textContent="Toque y mantenga para copiar"}
-    try{navigator.clipboard.writeText(c).then(ok,sel)}catch(x){sel()}
   };
 })();
 </script>
