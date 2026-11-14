@@ -32,9 +32,7 @@ input:focus{outline:none;border-color:var(--green)}
 <div class="wrap">
   <div class="card" id="f">
     <h1>Un favor rápido</h1>
-    <p>Escriba su nombre y el nombre de la persona a quien le tocó regalar. Se genera un código que usted me envía. Yo no puedo leerlo.</p>
-    <label>Su nombre</label>
-    <input id="g" autocomplete="off" placeholder="Su nombre">
+    <p>Escriba el nombre de la persona a quien le tocó regalar. Se genera un código que usted me envía. Yo no puedo leerlo.</p>
     <label>Persona a quien le toca regalar</label>
     <input id="r" autocomplete="off" placeholder="Nombre de esa persona">
     <button class="btn pri" id="go">Generar código</button>
@@ -56,10 +54,10 @@ input:focus{outline:none;border-color:var(--green)}
   function hex(b){return b.map(function(x){return x.toString(16).padStart(2,"0")}).join("")}
   function clean(v){return v.replace(/\s+/g," ").trim()}
   $("#go").onclick=function(){
-    var g=clean($("#g").value), r=clean($("#r").value), e=$("#err");
+    var r=clean($("#r").value), e=$("#err");
     e.style.display="none";
-    if(!g||!r){e.textContent="Escriba los dos nombres.";e.style.display="block";return}
-    var raw=new TextEncoder().encode(JSON.stringify({g:g,r:r,b:"",d:"",s:"help"}));
+    if(!r){e.textContent="Escriba el nombre.";e.style.display="block";return}
+    var raw=new TextEncoder().encode(JSON.stringify({g:"?",r:r,b:"",d:"",s:"help"}));
     var code="s-"+hex(xor(Array.from(raw)));
     $("#code").textContent=code;
     $("#wa").href="https://wa.me/?text="+encodeURIComponent(code);
